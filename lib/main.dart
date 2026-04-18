@@ -1,11 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:qareeb/features/splash/presentation/screens/splash_screens.dart';
+import 'package:qareeb/firebase_options.dart';
 // استدعاء مسار شاشة البداية التي قمنا بإنشائها
 
-void main() {
+ main() async {
   // هذه الدالة تضمن تهيئة محرك Flutter بالكامل قبل تشغيل التطبيق
   // نحتاجها دائماً إذا كنا سنضيف أوامر غير متزامنة (مثل تهيئة Firebase لاحقاً)
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   // أمر تشغيل التطبيق، ونمرر له الـ Widget الأساسي
   runApp(const QareebApp());

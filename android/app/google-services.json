@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "644460629560",
+    "project_id": "qareeb-1748d",
+    "storage_bucket": "qareeb-1748d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:644460629560:android:08a0266dd4d6f888a7a0cd",
+        "android_client_info": {
+          "package_name": "com.example.qareeb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSms8_HFBp-GXl1c02e7aGKRp60opWnZQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

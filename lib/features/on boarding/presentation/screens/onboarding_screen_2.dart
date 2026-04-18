@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:qareeb/features/splash/presentation/screens/onboarding_screen_2.dart';
+import 'package:qareeb/features/auth/presentation/screens/login_screen.dart';
 import '../../../../core/constants/app_images.dart';
 
-class OnboardingScreen extends StatelessWidget {
-  const OnboardingScreen({super.key});
+class OnboardingScreen2 extends StatelessWidget {
+  const OnboardingScreen2({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,17 +11,18 @@ class OnboardingScreen extends StatelessWidget {
       backgroundColor: Colors.black, // خلفية سوداء احتياطية
       body: Stack(
         children: [
-          // 1. الطبقة الأولى (الخلفية): صورة القهوة
+          // 1. الطبقة الأولى (الخلفية): صورة اللاتيه الجديدة
           SizedBox(
             width: double.infinity,
             height: double.infinity,
             child: Image.asset(
-              AppImages.onboardingCoffee,
-              fit: BoxFit.cover, // لتغطية الشاشة بالكامل
+              AppImages.onboardingLatte,
+              fit: BoxFit.cover,
             ),
           ),
 
           // 2. الطبقة الثانية: تدرج لوني (Gradient Overlay) لضمان وضوح النص
+          // نستخدم نفس التدرج من الشاشة السابقة لضمان الاتساق
           Container(
             width: double.infinity,
             height: double.infinity,
@@ -37,19 +38,21 @@ class OnboardingScreen extends StatelessWidget {
             ),
           ),
 
-     // 3. الطبقة الثالثة: المحتوى (النصوص والأزرار)
+          // 3. الطبقة الثالثة: المحتوى (النصوص والأزرار) - SafeArea
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
               child: Column(
-                // تغيير المحاذاة الأفقية لتصبح في المنتصف
+                // توسيط أفقي لكل المحتوى
                 crossAxisAlignment: CrossAxisAlignment.center, 
                 children: [
                   // زر التخطي (Skip) في أعلى اليمين
                   Align(
                     alignment: Alignment.topRight,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        // كود الانتقال لشاشة الدخول لاحقاً
+                      },
                       child: const Text(
                         'Skip',
                         style: TextStyle(
@@ -61,27 +64,27 @@ class OnboardingScreen extends StatelessWidget {
                     ),
                   ),
                   
-                  // الفراغ الأول: يدفع ما تحته (النصوص) إلى الأسفل
+                  // الفراغ الأول لتوسيط النص عمودياً
                   const Spacer(), 
 
-                  // العنوان الرئيسي
+                  // العنوان الرئيسي الجديد
                   const Text(
-                    'Your Neighborhood\nCafe, Just Steps Away.',
-                    textAlign: TextAlign.center, // توسيط النص داخلياً
+                    'Brewed for You,\nReady for Pick-Up.',
+                    textAlign: TextAlign.center, // توسيط داخلي
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
-                      height: 1.2,
+                      height: 1.2, // المسافة بين السطور
                     ),
                   ),
                   
                   const SizedBox(height: 16),
 
-                  // النص الفرعي (الوصف)
+                  // النص الفرعي الجديد (الوصف)
                   const Text(
-                    'Support your local community. Order your favorite coffee from nearby cafes with zero delivery hassle. Just order, walk, and sip!',
-                    textAlign: TextAlign.center, // توسيط النص داخلياً
+                    'Skip the lines at your local cafe. Place your order in advance and simply walk in to grab your fresh brew. Perfect for your busy schedule.',
+                    textAlign: TextAlign.center, // توسيط داخلي
                     style: TextStyle(
                       color: Colors.white70,
                       fontSize: 16,
@@ -89,29 +92,31 @@ class OnboardingScreen extends StatelessWidget {
                     ),
                   ),
                   
-                  // الفراغ الثاني: يوازن الفراغ الأول، فيستقر النص في المنتصف 
-                  // ويدفع زر (Next) إلى أسفل الشاشة
+                  // الفراغ الثاني لتوسيط النص ودفع زر (Next) للأسفل
                   const Spacer(), 
 
-                  // زر التالي (Next)
+                  // زر التالي (Next) - نفس تصميم الزر السابق
                   SizedBox(
-                    width: double.infinity, 
-                    height: 56, 
+                    width: double.infinity,
+                    height: 56,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFD4AF37),
+                        backgroundColor: const Color(0xFFD4AF37), // لون ذهبي
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      onPressed: () {Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const OnboardingScreen2()), // استبدل Scaffold بشاشة الدخول لاحقاً
-                      );},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => const LoginScreen()),
+                        );
+                        // كود الانتقال لشاشة الدخول لاحقاً
+                      },
                       child: const Text(
                         'Next',
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.black, // نص أسود لتباين أفضل مع الذهبي
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),

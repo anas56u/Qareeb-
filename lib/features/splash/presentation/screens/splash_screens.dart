@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:qareeb/core/constants/app_images.dart';
-import 'package:qareeb/features/splash/presentation/screens/onboarding_screen.dart'; // نحتاجها لاستخدام Future.delayed
+import 'package:qareeb/features/on%20boarding/presentation/screens/onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
