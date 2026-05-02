@@ -1,8 +1,10 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qareeb/core/constants/app_images.dart';
 import 'package:qareeb/core/widgets/primary_button.dart';
+import 'package:qareeb/features/auth/logic/auth_cubit/auth_cubit.dart';
+import 'package:qareeb/features/auth/logic/auth_cubit/auth_state.dart';
+import 'package:qareeb/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:qareeb/features/auth/presentation/widgets/CustomTextField.dart';
 import 'package:qareeb/features/auth/presentation/widgets/SocialButton.dart';
 
@@ -110,14 +112,54 @@ class _LoginBodyState extends State<LoginBody> {
                 ),
                 const SizedBox(height: 24),
 
-                // زر تسجيل الدخول (Sign in)
                 // زر تسجيل الدخول (Sign in) النظيف
-                PrimaryButton(
-                  text: 'Sign in',
-                  // isLoading: true, // جرب إزالة التعليق عن هذا السطر لترى كيف يظهر مؤشر التحميل!
-                  onPressed: () {
-                    print("Sign in Clicked");
-                    // هنا سنستدعي دالة الفايربيس لاحقاً
+                // تغليف الزر بـ BlocConsumer ليتفاعل مع الـ Cubit
+                BlocConsumer<AuthCubit, AuthState>(
+                  listener: (context, state) {
+                    // 1. إذا فشل تسجيل الدخول، نظهر رسالة خطأ (SnackBar)
+                    if (state is AuthFailure) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.errorMessage),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
+                    // 2. إذا نجح تسجيل الدخول، ننتقل للشاشة الرئيسية
+                    else if (state is AuthSuccess) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("تم تسجيل الدخول بنجاح!"),
+                          backgroundColor: Colors.green,
+                        ),
+                      );
+                      // هنا سنضيف كود الانتقال للشاشة الرئيسية (Home) لاحقاً
+                    }
+                  },
+                  builder: (context, state) {
+                    return PrimaryButton(
+                      text: 'Sign in',
+                      // نمرر true للزر إذا كانت الحالة الحالية هي حالة "تحميل"
+                      isLoading: state is AuthLoading,
+                      onPressed: () {
+                        // التحقق المبدئي (Validation) البسيط
+                        if (_emailController.text.isEmpty ||
+                            _passwordController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("الرجاء إدخال البريد وكلمة المرور"),
+                            ),
+                          );
+                          return; // إيقاف التنفيذ إذا كانت الحقول فارغة
+                        }
+
+                        // استدعاء دالة تسجيل الدخول من الـ Cubit
+                        context.read<AuthCubit>().signIn(
+                          email: _emailController.text.trim(),
+                          password: _passwordController.text.trim(),
+                        );
+                      },
+                    );
                   },
                 ),
                 const SizedBox(height: 32),
@@ -207,7 +249,12 @@ class _LoginBodyState extends State<LoginBody> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        // الانتقال لصفحة التسجيل
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SignUpScreen(),
+                          ),
+                        ); // الانتقال لصفحة التسجيل
                       },
                       child: Text(
                         'Register',
