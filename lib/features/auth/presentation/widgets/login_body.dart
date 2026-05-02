@@ -7,6 +7,7 @@ import 'package:qareeb/features/auth/logic/auth_cubit/auth_state.dart';
 import 'package:qareeb/features/auth/presentation/screens/sign_up_screen.dart';
 import 'package:qareeb/features/auth/presentation/widgets/CustomTextField.dart';
 import 'package:qareeb/features/auth/presentation/widgets/SocialButton.dart';
+import 'package:qareeb/features/home/presentation/screens/home_screen.dart';
 
 class LoginBody extends StatefulWidget {
   LoginBody({super.key});
@@ -133,6 +134,10 @@ class _LoginBodyState extends State<LoginBody> {
                           backgroundColor: Colors.green,
                         ),
                       );
+                      Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => const HomeScreen()),
+  );
                       // هنا سنضيف كود الانتقال للشاشة الرئيسية (Home) لاحقاً
                     }
                   },

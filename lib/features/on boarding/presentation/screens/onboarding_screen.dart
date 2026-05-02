@@ -8,20 +8,18 @@ class OnboardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black, // خلفية سوداء احتياطية
+      backgroundColor: Colors.black,
       body: Stack(
         children: [
-          // 1. الطبقة الأولى (الخلفية): صورة القهوة
           SizedBox(
             width: double.infinity,
             height: double.infinity,
             child: Image.asset(
               AppImages.onboardingCoffee,
-              fit: BoxFit.cover, // لتغطية الشاشة بالكامل
+              fit: BoxFit.cover,
             ),
           ),
-
-          // 2. الطبقة الثانية: تدرج لوني (Gradient Overlay) لضمان وضوح النص
+          
           Container(
             width: double.infinity,
             height: double.infinity,
@@ -30,22 +28,19 @@ class OnboardingScreen extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Colors.black.withOpacity(0.1), // شفافية خفيفة في الأعلى
-                  Colors.black.withOpacity(0.8), // لون داكن في الأسفل خلف النصوص
+                  Colors.black.withOpacity(0.1),
+                  Colors.black.withOpacity(0.8),
                 ],
               ),
             ),
           ),
 
-     // 3. الطبقة الثالثة: المحتوى (النصوص والأزرار)
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
               child: Column(
-                // تغيير المحاذاة الأفقية لتصبح في المنتصف
-                crossAxisAlignment: CrossAxisAlignment.center, 
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // زر التخطي (Skip) في أعلى اليمين
                   Align(
                     alignment: Alignment.topRight,
                     child: TextButton(
@@ -61,13 +56,11 @@ class OnboardingScreen extends StatelessWidget {
                     ),
                   ),
                   
-                  // الفراغ الأول: يدفع ما تحته (النصوص) إلى الأسفل
-                  const Spacer(), 
-
-                  // العنوان الرئيسي
+                  const Spacer(),
+                  
                   const Text(
                     'Your Neighborhood\nCafe, Just Steps Away.',
-                    textAlign: TextAlign.center, // توسيط النص داخلياً
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 32,
@@ -77,11 +70,10 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                   
                   const SizedBox(height: 16),
-
-                  // النص الفرعي (الوصف)
+                  
                   const Text(
                     'Support your local community. Order your favorite coffee from nearby cafes with zero delivery hassle. Just order, walk, and sip!',
-                    textAlign: TextAlign.center, // توسيط النص داخلياً
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white70,
                       fontSize: 16,
@@ -89,14 +81,11 @@ class OnboardingScreen extends StatelessWidget {
                     ),
                   ),
                   
-                  // الفراغ الثاني: يوازن الفراغ الأول، فيستقر النص في المنتصف 
-                  // ويدفع زر (Next) إلى أسفل الشاشة
-                  const Spacer(), 
-
-                  // زر التالي (Next)
+                  const Spacer(),
+                  
                   SizedBox(
-                    width: double.infinity, 
-                    height: 56, 
+                    width: double.infinity,
+                    height: 56,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFD4AF37),
@@ -104,10 +93,14 @@ class OnboardingScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      onPressed: () {Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => const OnboardingScreen2()), // استبدل Scaffold بشاشة الدخول لاحقاً
-                      );},
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const OnboardingScreen2(),
+                          ),
+                        );
+                      },
                       child: const Text(
                         'Next',
                         style: TextStyle(

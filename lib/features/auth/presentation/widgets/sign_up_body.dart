@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qareeb/core/constants/app_images.dart';
 import 'package:qareeb/features/auth/logic/auth_cubit/auth_cubit.dart';
 import 'package:qareeb/features/auth/logic/auth_cubit/auth_state.dart';
+import 'package:qareeb/features/home/presentation/screens/home_screen.dart';
 import 'CustomTextField.dart'; //
 import 'SocialButton.dart'; //
 import '../../../../core/widgets/primary_button.dart'; //
@@ -99,8 +100,11 @@ class _SignUpBodyState extends State<SignUpBody> {
                         backgroundColor: Colors.green,
                       ),
                     );
+                    Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => const HomeScreen()),
+  );
                     // نعود لشاشة تسجيل الدخول بعد النجاح
-                    Navigator.pop(context);
                   }
                 },
                 builder: (context, state) {
