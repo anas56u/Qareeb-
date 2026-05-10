@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../models/user_model.dart';
 
 class AuthRepository {
@@ -105,5 +106,62 @@ class AuthRepository {
   // ==========================================
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
+  }
+  // ==========================================
+  // 4. دالة تسجيل الدخول عبر جوجل (محدثة للإصدار 7.0+)
+  // ==========================================
+  Future<UserModel> signInWithGoogle() async {
+    try {
+      // 1. الوصول للنسخة الموحدة (Singleton)
+      final googleSignIn = GoogleSignIn.instance;
+
+      // 💡 Best Practice: تهيئة الحزمة (مطلوب إجبارياً في الإصدارات الحديثة)
+      // نضعها داخل try-catch لكي لا ينهار التطبيق إذا تم تهيئتها مسبقاً في مكان آخر
+      try {
+        await googleSignIn.initialize();
+      } catch (_) {}
+
+      // 2. فتح نافذة حسابات جوجل وتسجيل الدخول
+      // في الإصدار الحديث، الدالة تطلق Exception إذا ألغى المستخدم النافذة (لن ترجع null)
+      final GoogleSignInAccount googleUser = await googleSignIn.authenticate();
+
+      // 3. جلب الـ ID Token (يؤكد هوية المستخدم)
+      // ملاحظة: أصبحت authentication خاصية متزامنة (لا تحتاج await)
+      final idToken = googleUser.authentication.idToken;
+
+      // 4. طلب الصلاحيات للحصول على الـ Access Token (مطلوب لربط الحساب بفايربيس)
+      final clientAuth = await googleUser.authorizationClient.authorizeScopes(['email', 'profile']);
+      final accessToken = clientAuth.accessToken;
+
+      // 5. دمج البيانات لإنشاء بيانات الاعتماد الخاصة بفايربيس
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: accessToken,
+        idToken: idToken,
+      );
+
+      // 6. تسجيل الدخول في فايربيس باستخدام الاعتماد
+      UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
+      final User? firebaseUser = userCredential.user;
+
+      if (firebaseUser != null) {
+        DocumentSnapshot doc = await _firestore.collection('users').doc(firebaseUser.uid).get();
+
+        if (!doc.exists) {
+          UserModel newUser = UserModel(
+            uid: firebaseUser.uid,
+            name: firebaseUser.displayName ?? 'مستخدم جوجل',
+            email: firebaseUser.email ?? '',
+          );
+          await _firestore.collection('users').doc(newUser.uid).set(newUser.toMap());
+          return newUser;
+        } else {
+          return UserModel.fromMap(doc.data() as Map<String, dynamic>);
+        }
+      } else {
+        throw Exception("حدث خطأ غير متوقع أثناء الاتصال بفايربيس.");
+      }
+    } catch (e) {
+      throw Exception("فشل تسجيل الدخول بواسطة جوجل: ${e.toString()}");
+    }
   }
 }

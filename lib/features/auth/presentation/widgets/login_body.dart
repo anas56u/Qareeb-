@@ -218,8 +218,7 @@ class _LoginBodyState extends State<LoginBody> {
                       ),
                       onPressed: () {
                         // كود تسجيل الدخول بجوجل سيوضع هنا
-                        print("Google Login Clicked");
-                      },
+context.read<AuthCubit>().signInWithGoogle();                      },
                     ),
 
                     // 3. زر أبل (بديل تويتر - وهو أيقونة قياسية في Flutter)

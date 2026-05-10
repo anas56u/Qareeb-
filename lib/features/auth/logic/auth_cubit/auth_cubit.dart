@@ -9,6 +9,27 @@ class AuthCubit extends Cubit<AuthState> {
 
   AuthCubit(this._authRepository) : super(AuthInitial());
 
+
+
+  // ==========================================
+  // 4. دالة تسجيل الدخول بواسطة جوجل
+  // ==========================================
+  Future<void> signInWithGoogle() async {
+    // 1. نخبر الواجهة أننا بدأنا التحميل (ليظهر مؤشر التحميل)
+    emit(AuthLoading());
+    
+    try {
+      // 2. نطلب من الـ Repository تنفيذ العملية
+      final user = await _authRepository.signInWithGoogle();
+      
+      // 3. إذا نجحت العملية، نصدر حالة النجاح ونمرر المستخدم
+      emit(AuthSuccess(user: user));
+    } catch (e) {
+      // 4. في حال حدوث أي خطأ، نصدر حالة الفشل مع رسالة الخطأ
+      emit(AuthFailure(errorMessage: e.toString()));
+    }
+  }
+
   // ==========================================
   // 1. دالة تسجيل الدخول
   // ==========================================

@@ -12,7 +12,20 @@
           "package_name": "com.example.qareeb"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "644460629560-pc3bj25slv48bjfai6o34319o83f5b5r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.qareeb",
+            "certificate_hash": "47e8b055cc60aaebf2db8e06f30352319e7ad1c7"
+          }
+        },
+        {
+          "client_id": "644460629560-nka4cs8qrrirpe1uc1dmf6umub73lelb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBSms8_HFBp-GXl1c02e7aGKRp60opWnZQ"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "644460629560-nka4cs8qrrirpe1uc1dmf6umub73lelb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "644460629560-3mohv8i686ocs89gt9u9herp7f1a9l7l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.qareeb"
+              }
+            }
+          ]
         }
       }
     }
