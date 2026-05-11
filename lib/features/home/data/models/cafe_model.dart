@@ -1,30 +1,39 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class CafeModel {
   final String id;
   final String name;
-  final String address;
-  final double latitude;
-  final double longitude;
-  final double rating;
-  double? distance; 
+  final String imageUrl;
+  final double distance;
+  final bool isOpen;
 
   CafeModel({
     required this.id,
     required this.name,
-    required this.address,
-    required this.latitude,
-    required this.longitude,
-    required this.rating,
-    this.distance,
+    required this.imageUrl,
+    required this.distance,
+    required this.isOpen,
   });
 
-  factory CafeModel.fromMap(String id, Map<String, dynamic> map) {
+  // دالة لتحويل بيانات Firestore إلى كائن CafeModel
+  factory CafeModel.fromFirestore(DocumentSnapshot doc) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return CafeModel(
-      id: id,
-      name: map['name'] ?? '',
-      address: map['address'] ?? '',
-      latitude: (map['latitude'] ?? 0).toDouble(),
-      longitude: (map['longitude'] ?? 0).toDouble(),
-      rating: (map['rating'] ?? 0).toDouble(),
+      id: doc.id, // نأخذ الـ ID الخاص بالوثيقة من فايربيس
+      name: data['name'] ?? '',
+      imageUrl: data['imageUrl'] ?? '',
+      distance: (data['distance'] ?? 0.0).toDouble(),
+      isOpen: data['isOpen'] ?? false,
     );
+  }
+
+  // دالة لتحويل الكائن إلى خريطة (Map) لرفعه إلى فايربيس
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'imageUrl': imageUrl,
+      'distance': distance,
+      'isOpen': isOpen,
+    };
   }
 }

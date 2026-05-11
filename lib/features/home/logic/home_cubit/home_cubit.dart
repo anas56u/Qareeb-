@@ -1,19 +1,22 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../data/repositories/home_repository.dart';
 import 'home_state.dart';
+import '../../data/repositories/home_repository.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  final HomeRepository _homeRepository;
+  final HomeRepository repository;
 
-  HomeCubit(this._homeRepository) : super(HomeInitial());
+  // عند إنشاء الـ Cubit، نمرر له الـ Repository ونبدأ بالحالة Initial
+  HomeCubit(this.repository) : super(HomeInitial());
 
-  Future<void> getCafes() async {
-    emit(HomeLoading());
+  // دالة لجلب البيانات
+  Future<void> fetchHomeData() async {
+    emit(HomeLoading()); // 1. نخبر الواجهة أننا بدأنا التحميل
+
     try {
-      final cafes = await _homeRepository.getCafes();
-      emit(HomeSuccess(cafes: cafes));
+      final cafes = await repository.getNearbyCafes(); // 2. نطلب البيانات
+      emit(HomeLoaded(cafes: cafes)); // 3. نجحنا! نرسل البيانات للواجهة
     } catch (e) {
-      emit(HomeFailure(errorMessage: e.toString()));
+      emit(HomeError(message: e.toString())); // 4. فشلنا! نرسل رسالة الخطأ
     }
   }
 }
