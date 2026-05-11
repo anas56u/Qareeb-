@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qareeb/features/Menu/presentation/screens/menu_screen.dart';
+import 'package:qareeb/features/menu/presentation/screens/menu_screen.dart';
 import '../../data/models/cafe_model.dart';
 
 class CafeCard extends StatelessWidget {

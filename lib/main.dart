@@ -3,17 +3,18 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:qareeb/features/auth/data/repositories/auth_repository.dart';
 import 'package:qareeb/features/auth/logic/auth_cubit/auth_cubit.dart';
+import 'package:qareeb/features/cart/logic/cart_cubit/cart_cubit.dart';
 import 'package:qareeb/firebase_options.dart';
 
-import 'core/helpers/cache_helper.dart'; 
+import 'core/helpers/cache_helper.dart';
 import 'features/splash/presentation/screens/splash_screens.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // تهيئة الفايربيس
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  
+
   // تهيئة SharedPreferences
   await CacheHelper.init();
 
@@ -25,10 +26,11 @@ class QareebApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthCubit(
-        AuthRepository(),
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => AuthCubit(AuthRepository())),
+        BlocProvider<CartCubit>(create: (context) => CartCubit()),
+      ],
       child: MaterialApp(
         title: 'Qareeb - قريب',
         debugShowCheckedModeBanner: false,
