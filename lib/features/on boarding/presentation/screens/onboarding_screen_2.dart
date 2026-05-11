@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qareeb/core/helpers/cache_helper.dart';
 import 'package:qareeb/features/auth/presentation/screens/login_screen.dart';
+import 'package:qareeb/features/main_layout/presentation/screens/main_layout_screen.dart';
 import '../../../../core/constants/app_images.dart';
 
 class OnboardingScreen2 extends StatelessWidget {
@@ -48,23 +49,31 @@ class OnboardingScreen2 extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center, 
                 children: [
                   // زر التخطي (Skip) في أعلى اليمين
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: TextButton(
-                      onPressed: () {
-                        // كود الانتقال لشاشة الدخول لاحقاً
-                      },
-                      child: const Text(
-                        'Skip',
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ),
-                  
+                 Align(
+  alignment: Alignment.topRight,
+  child: TextButton(
+    onPressed: () async {
+      // حفظ أن المستخدم شاهد الـ Onboarding حتى لا تظهر له مرة أخرى
+      await CacheHelper.saveData(key: 'onBoarding', value: true);
+      
+      if (context.mounted) {
+        // نتوجه مباشرة إلى الشاشة الرئيسية (الحاوية الجديدة)
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const MainLayoutScreen()),
+        );
+      }
+    },
+    child: const Text(
+      'Skip',
+      style: TextStyle(
+        color: Colors.white70,
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+      ),
+    ),
+  ),
+),
                   // الفراغ الأول لتوسيط النص عمودياً
                   const Spacer(), 
 
@@ -107,18 +116,18 @@ class OnboardingScreen2 extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                     onPressed: () async {
-                        // 💡 Best Practice: حفظ القيمة أولاً قبل الانتقال
-                        await CacheHelper.saveData(key: 'onBoarding', value: true);
-                        
-                        // التأكد من أن الشاشة ما زالت مبنية لتجنب أخطاء الـ Context
-                        if (context.mounted) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => const LoginScreen()),
-                          );
-                        }
-                      },
+                   onPressed: () async {
+  await CacheHelper.saveData(key: 'onBoarding', value: true);
+  
+  if (context.mounted) {
+    Navigator.pushReplacement(
+      context,
+      // إذا كان التطبيق يتطلب تسجيل دخول، اتركها LoginScreen
+      // إذا كنت تريد الدخول فوراً للتطبيق، غيرها إلى MainLayoutScreen
+      MaterialPageRoute(builder: (context) => const LoginScreen()), 
+    );
+  }
+},
                       child: const Text(
                         'Next',
                         style: TextStyle(
