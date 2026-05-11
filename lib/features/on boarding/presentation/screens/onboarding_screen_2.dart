@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qareeb/core/helpers/cache_helper.dart';
 import 'package:qareeb/features/auth/presentation/screens/login_screen.dart';
 import '../../../../core/constants/app_images.dart';
 
@@ -106,12 +107,17 @@ class OnboardingScreen2 extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (context) => const LoginScreen()),
-                        );
-                        // كود الانتقال لشاشة الدخول لاحقاً
+                     onPressed: () async {
+                        // 💡 Best Practice: حفظ القيمة أولاً قبل الانتقال
+                        await CacheHelper.saveData(key: 'onBoarding', value: true);
+                        
+                        // التأكد من أن الشاشة ما زالت مبنية لتجنب أخطاء الـ Context
+                        if (context.mounted) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => const LoginScreen()),
+                          );
+                        }
                       },
                       child: const Text(
                         'Next',

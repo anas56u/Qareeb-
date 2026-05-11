@@ -17,7 +17,6 @@ backgroundColor: Colors.brown[100],        body: SafeArea(
           child: CustomScrollView(
             physics: const BouncingScrollPhysics(),
             slivers: [
-              // 1. شريط العنوان والترحيب
               SliverToBoxAdapter(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
